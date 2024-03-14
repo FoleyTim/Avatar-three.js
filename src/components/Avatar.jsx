@@ -131,7 +131,6 @@ export function Avatar(props) {
     }
   });
   useEffect(() => {
-    console.log(materials.Wolf3D_Outfit_Top)
     if (playAudio) {
       audio.play()
     } else {
