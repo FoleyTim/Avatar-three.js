@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+backend/audios/message.wav
+backend/audios/message.mp3
+backend/audios/message.json
+backend/.env

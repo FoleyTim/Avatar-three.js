@@ -22,7 +22,7 @@ export const UI = ({ hidden, ...props }) => {
         <div className="text-center items-center self-start backdrop-blur-md bg-white bg-opacity-50 p-4 rounded-lg">
           <h1 className="font-black text-xl">Brewella</h1>
           <br/>
-          <img width="100px" src="../../public/textures/starbucks.png"/>
+          <img width="100px" src="/textures/starbucks.png"/>
         </div>
         <div className="w-full flex flex-col items-end justify-center gap-4">
         </div>
