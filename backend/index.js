@@ -6,8 +6,6 @@ import express from "express";
 import { promises as fs } from "fs";
 dotenv.config();
 
-
-
 const elevenLabsApiKey = process.env.ELEVEN_LABS_API_KEY;
 const voiceID = process.env.ELEVEN_LABS_ID;
 
@@ -48,23 +46,44 @@ const lipSyncMessage = async () => {
   console.log(`Lip sync done in ${new Date().getTime() - time}ms`);
 };
 
+const chatBot = async (message) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "insomnia/8.2.0",
+    },
+    body: JSON.stringify({ message: message }),
+  };
+  return await fetch(
+    "http://localhost:5001/api/agent/text-input",
+    options
+  ).then((response) => response.json());
+};
+
 app.post("/chat", async (req, res) => {
   const userMessage = req.body.message;
-    const message = {}
-    const fileName = `audios/message.mp3`; // The name of your audio file
-    const textInput = userMessage; // The text you wish to convert to speech
-    await voice.textToSpeech(elevenLabsApiKey, voiceID, fileName, textInput);
-    // generate lipsync
-    await lipSyncMessage();
-    message.audio = await audioFileToBase64(fileName);
-    message.lipsync = await readJsonTranscript(`audios/message.json`);
-  res.send({ messages:[        {
-    text: message,
-    audio: await audioFileToBase64(fileName),
-    lipsync: await readJsonTranscript(`audios/message.json`),
-    facialExpression: "smile",
-    animation: "Talking1",
-  }] });
+  const message = {};
+  const fileName = `audios/message.mp3`; // The name of your audio file
+  const chatbotResponse = await chatBot(userMessage);
+  const textInput =
+    chatbotResponse.data[0].queryResult.responseMessages[0].text.text[0];
+  await voice.textToSpeech(elevenLabsApiKey, voiceID, fileName, textInput);
+  // generate lipsync
+  await lipSyncMessage();
+  message.audio = await audioFileToBase64(fileName);
+  message.lipsync = await readJsonTranscript(`audios/message.json`);
+  res.send({
+    messages: [
+      {
+        text: message,
+        audio: await audioFileToBase64(fileName),
+        lipsync: await readJsonTranscript(`audios/message.json`),
+        facialExpression: "smile",
+        animation: "Talking1",
+      },
+    ],
+  });
 });
 
 const readJsonTranscript = async (file) => {

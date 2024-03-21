@@ -3,7 +3,7 @@ import {
   ContactShadows,
   Environment,
   Text,
-  useTexture
+  useTexture,
 } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useChat } from "../hooks/useChat";
@@ -17,7 +17,6 @@ const Dots = (props) => {
     if (loading) {
       const interval = setInterval(() => {
         setLoadingText((loadingText) => {
-
           if (loadingText.length > 2) {
             return ".";
           }
@@ -41,14 +40,13 @@ const Dots = (props) => {
 };
 
 export const Experience = () => {
-  const texture = useTexture("textures/background1.jpg")
-  const viewport = useThree((state) => state.viewport)
+  const texture = useTexture("textures/background1.jpg");
+  const viewport = useThree((state) => state.viewport);
 
   return (
     <>
-    <OrbitControls/>
       <Environment preset="sunset" />
-      <mesh scale={1} position={[0,0,0,]}>
+      <mesh scale={1} position={[0, 0, 0]}>
         <planeGeometry args={[viewport.width, viewport.height]} />
         <meshBasicMaterial map={texture} />
       </mesh>
@@ -59,4 +57,3 @@ export const Experience = () => {
     </>
   );
 };
-
