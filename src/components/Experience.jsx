@@ -40,7 +40,10 @@ const Dots = (props) => {
 };
 
 export const Experience = () => {
-  const texture = useTexture("textures/background1.jpg");
+  const isMobile = false;
+  const texture = isMobile
+    ? useTexture("textures/background1-vert.png")
+    : useTexture("textures/background1.jpg");
   const viewport = useThree((state) => state.viewport);
 
   return (
